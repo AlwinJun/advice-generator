@@ -1,7 +1,9 @@
 function App() {
   return (
     <>
-      <h1 className='text-3xl font-semibold line-through'>Hello world!</h1>
+      {/* Advice #<!-- Advice ID goes here -->
+
+      "<!-- Advice text goes here -->" */}
     </>
   );
 }
