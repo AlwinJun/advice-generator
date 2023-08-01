@@ -1,21 +1,34 @@
-import dice from "images/icon-dice.svg";
+import { useEffect, useState } from "react";
+
+import Advice from "components/Advice";
+import Dice from "components/Dice";
+
 import dividerMobile from "images/pattern-divider-mobile.svg";
 import dividerDesktop from "images/pattern-divider-desktop.svg";
 
 function App() {
-  console.log(dividerMobile);
+  const [id, setId] = useState(1);
+  const [advices, setAdvices] = useState({});
+
+  useEffect(() => {
+    const getAdvice = async (id) => {
+      const response = await fetch(`https://api.adviceslip.com/advice/${id}`);
+      const advice = await response.json();
+      setAdvices(advice.slip);
+    };
+    getAdvice(id);
+  }, [id]);
+
+  const getId = () => {
+    const randomId = Math.ceil(Math.random() * 200);
+    setId(randomId);
+  };
+
   return (
     <>
       <div className="grid h-screen w-screen place-items-center bg-blue-dark font-manrope">
         <article className="relative w-[20em] rounded-lg bg-blue-darkGrayish p-6	text-center md:w-[28em]">
-          <h4 className="mb-4 text-sm tracking-widest text-neon">
-            Advice #117
-          </h4>
-          <p className="mb-6 text-primary font-extrabold leading-snug text-cyan">
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio ad
-            fuga laboriosam exercitationem doloribus rerum nostrum rem enim
-            quibusdam delectus, repellat voluptatum, a impedit"
-          </p>
+          <Advice id={advices.id} body={advices.advice} />
           <div className="mb-6">
             <img
               className="mx-auto md:hidden"
@@ -28,9 +41,7 @@ function App() {
               alt="divider pattern"
             />
           </div>
-          <div className="absolute -bottom-6 left-2/4 grid h-12 w-12 -translate-x-1/2	cursor-pointer place-items-center rounded-full bg-neon duration-200 hover:shadow-[0px_0px_30px_4px_hsl(150,100%,66%)]">
-            <img src={dice} alt="dice" />
-          </div>
+          <Dice getId={getId} />
         </article>
       </div>
     </>
